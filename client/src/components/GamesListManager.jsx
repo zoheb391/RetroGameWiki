@@ -5,7 +5,7 @@ import { Game } from '../components'
 
 
 const GamesListManager = props => {
-    let { games, setSearchBar, searchBar, toggleModal } = props
+    let { games, setSearchBar, searchBar,toggleModal } = props
 
     return (
         <div className='container scrollable'>
@@ -15,7 +15,7 @@ const GamesListManager = props => {
             <div className='row'>
                 <input
                     type='search' placeholder='Search by Name'
-                    className='form-control search-bar' onKeyUp={setSearchBar} />
+                    className='form-control search-bar' onKeyUp={event => setSearchBar(event.target.value)} />
             </div>
             <div className='row'>
                 {
@@ -35,6 +35,5 @@ const GamesListManager = props => {
         </div>
     )
 }
-
 
 export default GamesListManager
