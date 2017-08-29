@@ -7,7 +7,7 @@ import { Game } from '../components'
 const GamesListManager = props => {
     let { games, setSearchBar, searchBar,toggleModal } = props
 
-    return (
+        return (
         <div className='container scrollable'>
             <div className='row text-left'>
                 <Link to='/games/add' className='btn btn-danger'>Add a new Game!</Link>

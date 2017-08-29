@@ -5,7 +5,7 @@ const loaders = require('./webpack-loaders')
 
 const common = {
     entry: {
-        app: PATH.src
+        app: ['babel-polyfill', PATH.src]
     },
     output: {
         path: PATH.dist,
