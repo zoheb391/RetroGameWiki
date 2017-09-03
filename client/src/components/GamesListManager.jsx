@@ -5,7 +5,7 @@ import { Game } from '../components'
 
 
 const GamesListManager = props => {
-    let { games, setSearchBar, searchBar,toggleModal } = props
+    let { games, setSearchBar, searchBar,toggleModal, deleteGame } = props
 
         return (
         <div className='container scrollable'>
@@ -27,6 +27,7 @@ const GamesListManager = props => {
                                     key={game._id}
                                     i={i}
                                     toggleModal={toggleModal}
+                                    deleteGame={deleteGame}
                                 />
                             )
                         })

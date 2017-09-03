@@ -1,13 +1,13 @@
 import Game from '../models/Game'
 
 
-const getGames = (req, res) => {
+export const getGames = (req, res) => {
     Game.find(null, null, { sort: { postDate: 1 } }, (err, games) => {
         res.json(games)
     })
 }
 
-const postGame = (req, res) => {
+export const postGame = (req, res) => {
     let game = req.body
 
     Game.create( game, (err, result) => {
@@ -22,5 +22,11 @@ const postGame = (req, res) => {
 
 }
 
+export const deleteGame = (req, res) => {
+    let gameId = req.params.id
 
-export { getGames, postGame }
+    Game.remove({ _id: gameId})
+        .then(response => res.send({ message: 'game deleted'}))
+        .catch(e => res.send(e))
+
+}

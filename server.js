@@ -5,7 +5,7 @@ import morgan from 'morgan'
 import dotenv from 'dotenv'
 
 import game from './app/models/Game'
-import { getGames, postGame } from './app/routes/game'
+import { getGames, postGame, deleteGame } from './app/routes/game'
 
 dotenv.config()
 const app = express()
@@ -39,6 +39,9 @@ app.use((req, res, next) => {
 app.route('/api/games')
     .get(getGames)
     .post(postGame)
+
+app.route('/api/games/:id')
+    .delete(deleteGame)
 
 app.route('*').get((req, res) => {
     res.sendFile('/client/dist/index.html')
