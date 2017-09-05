@@ -1,16 +1,16 @@
 import React from 'react'
 import { Provider } from 'react-redux'
-import { Router, Route, hashHistory, IndexRoute } from 'react-router'
+import { Router, Route, browserHistory, IndexRoute } from 'react-router'
 
 import configureStore from './store'
 import { GamesContainer, AddGameContainer } from './containers'
-import  { Home, Welcome, About, Contact, Archive } from './components'
+import  { Home, Welcome, About, Contact, Archive, Login } from './components'
 
 const store= configureStore()
 
 const routes = (
     <Provider store={store}>
-        <Router history={hashHistory}>
+        <Router history={browserHistory}>
             <Route path='/' component={Home}>
                 <IndexRoute component={Welcome} />
                 <Route path='/about' component={About} />
@@ -19,6 +19,10 @@ const routes = (
             <Route path='/games' component={Archive}>
                 <IndexRoute component={GamesContainer} />
                 <Route path='add' component={AddGameContainer} />
+            </Route>
+            <Route path='/auth' component={Archive}>
+                <IndexRoute component={Login} />
+                <Route path='login' component={Login} />
             </Route>
         </Router>
     </Provider>

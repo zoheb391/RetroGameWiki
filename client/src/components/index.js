@@ -7,6 +7,10 @@ import Modal from './Modal'
 import Game from './Game'
 import GamesListManager from './GamesListManager'
 import Form from './Form'
+import Login from './Login'
+import AddGamePanel from './AddGamePanel'
+
+
 
 
 
@@ -20,5 +24,7 @@ export {
     Modal,
     Game,
     GamesListManager,
-    Form
+    Form,
+    Login,
+    AddGamePanel
 }

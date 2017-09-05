@@ -26,7 +26,7 @@ const Layout = props => (
         </nav>
         {props.children}
         <footer className="text-center">
-            <p>© Samuel Zaza's tutorial</p>
+            <p>https://github.com/zoheb391/RetroGameWiki</p>
         </footer>
     </div>
 )

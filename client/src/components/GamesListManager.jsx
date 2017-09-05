@@ -1,16 +1,19 @@
 import React from 'react'
 import { Link } from 'react-router'
 
-import { Game } from '../components'
+import { Game, AddGamePanel } from '../components'
 
 
 const GamesListManager = props => {
-    let { games, setSearchBar, searchBar,toggleModal, deleteGame } = props
+    let { games, setSearchBar, searchBar,toggleModal, deleteGame, logout, user } = props
 
-        return (
+    return (
         <div className='container scrollable'>
             <div className='row text-left'>
-                <Link to='/games/add' className='btn btn-danger'>Add a new Game!</Link>
+                <AddGamePanel
+                    logout={logout}
+                    user={user}
+                />
             </div>
             <div className='row'>
                 <input
@@ -28,6 +31,7 @@ const GamesListManager = props => {
                                     i={i}
                                     toggleModal={toggleModal}
                                     deleteGame={deleteGame}
+                                    user={user}
                                 />
                             )
                         })
