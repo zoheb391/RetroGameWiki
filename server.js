@@ -10,7 +10,7 @@ import cors from 'cors'
 import getConfig from './app/lib/config'
 import game from './app/models/Game'
 import user from './app/models/User'
-import auth from './app/middlewares/auth'
+import { auth, end } from './app/middlewares/auth'
 
 import { login, signup, logout } from './app/routes/user'
 import { getGames, postGame, deleteGame } from './app/routes/game'
@@ -59,8 +59,8 @@ app.route('/auth/logout')
     .post(logout)
 
 app.route('/test')
-    .post(auth)
-    
+    .get(auth, end)
+
 // API Routes
 app.route('/api/games')
     .get(getGames)

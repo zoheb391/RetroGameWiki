@@ -1,28 +1,36 @@
+import axios from 'axios'
 import { takeLatest } from 'redux-saga'
-import { hashHistory } from 'react-router'
+import { browserHistory } from 'react-router'
 import { put, select, call } from 'redux-saga/effects'
 
 
-import { GET_GAMES, DELETE_GAME, SUBMIT_GAME, UPLOAD_PIC } from '../reducers/games'
-import { getGamesSuccess, getGamesFailure, setPicURL } from '../reducers/games'
+import { SET_GAMES, DELETE_GAME, SUBMIT_GAME, UPLOAD_PIC } from '../reducers/games'
+import { setGames, setPicURL } from '../reducers/games'
 
 const fetchGames = () => {
-    return fetch('http://localhost:8080/api/games', {
-        headers: {
-            'Content-Type': 'application/json'
-        }
+    return axios({
+        method: 'GET',
+        url: 'http://localhost:8080/api/games',
+        withCredentials: true,
+        headers: { 'Content-Type': 'application/json' },
     })
-    .then(response => response.json())
+    .then(response => response.data)
+    .catch(error => {
+        throw error
+    })
 }
 
 const removeGame = id => {
-    return fetch(`http://localhost:8080/api/games/${id}`, {
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        method: 'DELETE'
+    return axios({
+        method: 'DELETE',
+        url: `http://localhost:8080/api/games/${id}`,
+        withCredentials: true,
+        headers: { 'Content-Type': 'application/json' },
     })
-    .then(response => response.json())
+    .then(response => response.data)
+    .catch(error => {
+        throw error
+    })
 }
 
 const fetchURL = () => {
@@ -44,19 +52,16 @@ const fetchURL = () => {
 }
 
 const gameSumbission = game => {
-    return new Promise((resolve, reject) => {
-        fetch('http://localhost:8080/api/games', {
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            method: 'POST',
-            body: JSON.stringify(game)
-        })
-        .then(response => {
-            response.ok
-                ? resolve({message: 'game created'})
-                : reject({message: 'Submission Error'})
-        })
+    return axios({
+        method: 'POST',
+        url: 'http://localhost:8080/api/games',
+        withCredentials: true,
+        headers: { 'Content-Type': 'application/json' },
+        data: JSON.stringify(game)
+    })
+    .then(response => response.data)
+    .catch(error => {
+        throw error
     })
 }
 
@@ -66,18 +71,32 @@ function* deleteGame({ payload }) {
 
     try {
         let response = yield removeGame(deleteGameId)
-        let games = yield call(getGames)
+        yield put({type: 'init::games'})
+        
     } catch(err) {
-        alert('Error Deleting Game', err)
+        if (err.response) {
+            console.log(err.response.data.message)
+        } else if (err.request) {
+            console.log(err.request)
+        } else {
+            console.log('delete games error', err)
+        }
     }
 }
 
 function* getGames() {
     try {
         let games = yield fetchGames()
-        yield put(getGamesSuccess(games))
+        yield put(setGames(games))
+
     } catch (err) {
-        yield put(getGamesFailure)
+        if (err.response) {
+            console.log(err.response.data.message)
+        } else if (err.request) {
+            console.log(err.request)
+        } else {
+            console.log('fetch games error', err)
+        }
     }
 }
 
@@ -87,10 +106,11 @@ function* submitGame({ payload: game }) {
 
     try {
         const response = yield gameSumbission(newGame)
-        hashHistory.push('/games')
+        console.log('try', response)
+        browserHistory.push('/games')
         yield put(setPicURL(''))
     } catch(e) {
-        alert('error submitting', e)
+        console.log('error submitting', e)
     }
 
 }
@@ -102,28 +122,17 @@ function* uploadPicture(){
     } catch (err) {
         alert('failed to load pic')
     }
-
 }
 
-function* watchGetGames() {
-    yield takeLatest(GET_GAMES, getGames)
-}
-
-function* watchDeleteGames() {
-    yield takeLatest(DELETE_GAME, deleteGame)
-}
-
-function* watchSubmitGame() {
+function* watchGames() {
+    yield takeLatest('init::games', getGames)
+    yield takeLatest('delete::game', deleteGame)
     yield takeLatest(SUBMIT_GAME, submitGame)
+    yield takeLatest(UPLOAD_PIC, uploadPicture)
+
 }
 
-function* watchUploadPic() {
-    yield takeLatest(UPLOAD_PIC, uploadPicture)
-}
 
 export {
-    watchGetGames,
-    watchDeleteGames,
-    watchSubmitGame,
-    watchUploadPic
+    watchGames
 }

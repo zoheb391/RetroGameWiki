@@ -33,8 +33,7 @@ const GamesListManager = props => {
                                     deleteGame={deleteGame}
                                     user={user}
                                 />
-                            )
-                        })
+                            )})
                 }
             </div>
         </div>

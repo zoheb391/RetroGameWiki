@@ -1,12 +1,9 @@
-import { watchGetGames, watchDeleteGames, watchSubmitGame, watchUploadPic } from './games'
+import { watchGames } from './games'
 import { watchAuthentication } from './authentication'
 
 export default function* rootSaga() {
     yield [
-        watchGetGames(),
-        watchDeleteGames(),
-        watchSubmitGame(),
-        watchUploadPic(),
+        watchGames(),
         watchAuthentication()
     ]
 }
