@@ -11,6 +11,21 @@ const mapStateToProps = state => ({
     errors: state.authentication.errors
 })
 
+
+const renderField = ({input, placeholder, label, type, meta: {touched, error, warning}}) => {
+    return(
+      <div>
+        <label>{label.toUpperCase()}</label>
+        <div>
+            <input className='form-control' {...input} placeholder={placeholder} type={type} />
+              {touched &&
+                ((error && <span>{error}</span>) ||
+                  (warning && <span>{warning}</span>))}
+        </div>
+      </div>
+    )
+}
+
 const Login = props =>  {
 
   let { handleSubmit, doLogin, errors } = props
@@ -20,10 +35,10 @@ const Login = props =>  {
           <div className="form-group text-left">
               <label
                   htmlFor="errors"
-                  style= {{ color: 'red'}}>
+                  style= {{ color: '#d9534f'}}>
 
                     Error</label>
-              <li className="error" style= {{ color: 'red'}}>
+              <li className="error" style= {{ color: '#d9534f'}}>
                   {errors[0]}
               </li>
           </div>
@@ -43,23 +58,21 @@ const Login = props =>  {
                     <div className="panel-body">
                         <form onSubmit={handleSubmit(doLogin)}>
                             <div className="form-group text-left">
-                                <label htmlFor="name">Email</label>
                                 <Field
                                     name="email"
                                     type="text"
-                                    className="form-control"
-                                    component="input"
+                                    component={renderField}
                                     placeholder="Enter your email"
+                                    label='email'
                                 />
                             </div>
                             <div className="form-group text-left">
-                                <label htmlFor="password">Password</label>
                                 <Field
                                     name="password"
-                                    component='input'
+                                    component={renderField}
                                     type="password"
-                                    className="form-control"
                                     placeholder="Enter the password"
+                                    label='password'
                                 />
                             </div>
                             { errors.length > 0 && renderErrors(errors) }

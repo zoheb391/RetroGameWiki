@@ -369,3 +369,11 @@ footer {
   color:yellow;
   text-decoration:underline;
 }
+
+.game-form span{
+    color: #d9534f;
+}
+
+.login-form span{
+    color: #d9534f;
+}

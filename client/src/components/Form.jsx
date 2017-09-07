@@ -2,6 +2,49 @@ import React from 'react'
 import { Link } from 'react-router'
 import { Field, reduxForm } from 'redux-form'
 
+const renderField = ({input, placeholder, label, type, meta: {touched, error, warning}}) => {
+    const renderTextArea = () => (
+        <div>
+            <textarea rows='5' className='form-control' {...input} placeholder={placeholder} type={type} />
+              {touched &&
+                ((error && <span>{error}</span>) ||
+                  (warning && <span>{warning}</span>))}
+        </div>
+    )
+    const renderInput = () => (
+        <div>
+            <input className='form-control' {...input} placeholder={placeholder} type={type} />
+              {touched &&
+                ((error && <span>{error}</span>) ||
+                  (warning && <span>{warning}</span>))}
+        </div>
+    )
+    return(
+      <div>
+        <label>{label.toUpperCase()}</label>
+        {label==='description' ? renderTextArea() : renderInput()}
+      </div>
+    )
+}
+
+//validation object passed to form
+const validate = values => {
+  const errors = {}
+
+  if (!values.year) {
+      errors.year = 'required'
+  }
+  if (!values.name) {
+      errors.name = 'required'
+  } else if (values.name.length < 4) {
+      errors.name = 'sorry bud too short'
+  }
+  if (!values.description) {
+      errors.description = 'required'
+  }
+
+  return errors
+}
 
 const Form = props => {
     let { submitAction, uploadPicture, handleSubmit, picture } = props
@@ -19,44 +62,40 @@ const Form = props => {
                         </h2>
                     </div>
                     <div className='panel-body'>
-                        <form onSubmit={handleSubmit(submitAction)}>
+                        <form className='game-form' onSubmit={handleSubmit(submitAction)}>
 
                             <div className='form-group text-left'>
-                                <label htmlFor='caption'>Name</label>
                                 <Field
                                     name='name'
                                     type='text'
-                                    className='form-control'
-                                    component='input'
-                                    placeholder='Enter the Name'
+                                    placeholder='Enter your Name'
+                                    component={renderField}
+                                    label='name'
                                 />
                             </div>
 
                             <div className='form-group text-left'>
-                                <label htmlFor='description'>Description</label>
                                 <Field
                                     name='description'
                                     type='text'
-                                    className='form-control'
-                                    component='textarea'
+                                    component={renderField}
                                     placeholder='Enter the Description'
-                                    rows='5'
+                                    label='description'
                                 />
                             </div>
 
                             <div className='form-group text-left'>
-                                <label htmlFor='price'>Year</label>
                                 <Field
                                     name='year'
                                     type='number'
-                                    className='form-control'
-                                    component='input'
+                                    component={renderField}
                                     placeholder='Enter the Year'
+                                    label='year'
                                 />
                             </div>
 
                             <div className='form-group text-left'>
-                                <label htmlFor='picture'>Picture</label>
+                                <label htmlFor='picture'>PICTURE</label>
                                 <div className='text-center dropup'>
                                     <button
                                         id='button-upload'
@@ -86,4 +125,4 @@ const Form = props => {
     )
 }
 
-export default reduxForm({ form: 'game' })(Form)
+export default reduxForm({ form: 'game', validate })(Form)
