@@ -4,7 +4,7 @@ import { Router, Route, browserHistory, IndexRoute } from 'react-router'
 
 import configureStore from './store'
 import { GamesContainer, AddGameContainer } from './containers'
-import  { Home, Welcome, About, Contact, Archive, Login } from './components'
+import  { Home, Welcome, About, Contact, Archive, Login, Signup } from './components'
 
 const store= configureStore()
 
@@ -23,6 +23,7 @@ const routes = (
             <Route path='/auth' component={Archive}>
                 <IndexRoute component={Login} />
                 <Route path='login' component={Login} />
+                <Route path='signup' component={Signup} />
             </Route>
         </Router>
     </Provider>

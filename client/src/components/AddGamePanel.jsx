@@ -7,7 +7,7 @@ const AddGamePanel = props => {
     const signedIn = ({ user, logout }) => {
         return(
             <div className='add-game-panel'>
-              <h5>Welcome back {user}, <span onClick={logout}>Logout</span></h5>
+              <h5>Welcome {user}, <span onClick={logout}>Logout</span></h5>
               <Link to='/games/add' className='btn btn-danger'>add a new Game!</Link>
             </div>
         )

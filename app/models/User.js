@@ -9,7 +9,7 @@ const userSchema = mongoose.Schema({
 
 userSchema.pre('save', function (next, done) {
     let user = this
-
+    
     bcrypt.genSalt(10, function (err, salt) {
         bcrypt.hash(user.password, salt, function(err, hash) {
             user.password = hash
@@ -19,5 +19,6 @@ userSchema.pre('save', function (next, done) {
 
     setTimeout(done, 100)
 })
+
 
 export default mongoose.model('User', userSchema)

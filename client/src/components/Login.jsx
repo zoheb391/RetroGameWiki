@@ -26,24 +26,24 @@ const renderField = ({input, placeholder, label, type, meta: {touched, error, wa
     )
 }
 
+const renderErrors = errors => {
+    return (
+        <div className="form-group text-left">
+            <label
+                htmlFor="errors"
+                style= {{ color: '#d9534f'}}>
+
+                  Error</label>
+            <li className="error" style= {{ color: '#d9534f'}}>
+                {errors[0]}
+            </li>
+        </div>
+    )
+}
+
 const Login = props =>  {
 
   let { handleSubmit, doLogin, errors } = props
-
-  const renderErrors = errors => {
-      return (
-          <div className="form-group text-left">
-              <label
-                  htmlFor="errors"
-                  style= {{ color: '#d9534f'}}>
-
-                    Error</label>
-              <li className="error" style= {{ color: '#d9534f'}}>
-                  {errors[0]}
-              </li>
-          </div>
-      )
-  }
 
     return (
         <div className="row scrollable">
@@ -81,12 +81,12 @@ const Login = props =>  {
                                 className="btn btn-submit btn-block"
                             >
                                 Login
-                                </button>
-                            </form>
-                        </div>
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>
+        </div>
     )
 }
 

@@ -14,7 +14,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
     setSearchBar: value => ({ type: 'setSearchBar@app', payload: value }),
     initGames: () => ({ type: 'init::games'}),
-    selectGame: game => ({ type: 'getSelectedGame@app', payload: game }),
+    selectGame: game => ({ type: 'setSelectedGame@app', payload: game }),
     deleteGame: index => ({ type: 'delete::game', payload: index }),
     logout: () => ({ type: 'do::logout'})
 }

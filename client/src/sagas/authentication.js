@@ -34,6 +34,41 @@ const attemptLogout = () => {
     })
 }
 
+const attemptSignup = credentials => {
+    return axios({
+        method: 'POST',
+        url: 'http://localhost:8080/auth/signup',
+        withCredentials: true,
+        headers: { 'Content-Type': 'application/json' },
+        data: JSON.stringify(credentials)
+    })
+    .then(response => response.data)
+    .catch(error => {
+        throw error
+    })
+}
+
+function* doSignup({ payload: credentials }) {
+    try {
+        yield put(clearErrors())
+        let response = yield attemptSignup(credentials)
+        console.log(response)
+        yield put(setUser(response.accountDetails.username))
+        history.push('/games')
+
+    } catch(error) {
+        if (error.response) {
+            yield put(setError(error.response.data.message))
+            console.log(error.response.data.message)
+        } else if (error.request) {
+            console.log(error.request)
+        } else {
+            console.log('signup saga error', error.message)
+        }
+    }
+}
+
+
 function* doLogin({ payload: credentials}) {
     try {
         yield put(clearErrors())
@@ -41,12 +76,12 @@ function* doLogin({ payload: credentials}) {
         yield put(setUser(response.accountDetails.username))
         history.push('/games')
 
-    } catch(err) {
-        if (err.response) {
-            yield put(setError(err.response.data.message))
-            console.log(err.response.data.message)
-        } else if (err.request) {
-            console.log(err.request)
+    } catch(error) {
+        if (error.response) {
+            yield put(setError(error.response.data.message))
+            console.log(error.response.data.message)
+        } else if (error.request) {
+            console.log(error.request)
         } else {
             console.log('login saga error', error.message)
         }
@@ -58,12 +93,12 @@ function* doLogout() {
         let response = yield attemptLogout()
         yield put(setUser(null))
 
-    } catch(err) {
-        if (err.response) {
-            yield put(setError(err.response.data.message))
-            console.log(err.response.data.message)
-        } else if (err.request) {
-            console.log('server unavailable', err.request)
+    } catch(error) {
+        if (error.response) {
+            yield put(setError(error.response.data.message))
+            console.log(error.response.data.message)
+        } else if (error.request) {
+            console.log('server unavailable', error.request)
         } else {
             console.log('logout saga error', error.message)
         }
@@ -73,6 +108,7 @@ function* doLogout() {
 function* watchAuthentication() {
     yield takeLatest('do::login', doLogin)
     yield takeLatest('do::logout', doLogout)
+    yield takeLatest('do::signup', doSignup)
 }
 
 export {

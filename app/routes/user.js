@@ -31,25 +31,35 @@ export const login = (req, res) => {
 }
 
 export const signup = (req, res) => {
-    let user = User({
-        email: req.body.email,
-        password: req.body.password,
-        name: req.body.name,
-    })
+    let { email } = req.body
 
-    user.save((err, result) => {
-        if (err) {
-            throw err
-        } else {
+    return User.findOne({ email }, (err, found) => {
+        if (found) return res.status(401).send({ message: 'User Already Exists!'})
+
+        let user = User({
+            email: req.body.email,
+            password: req.body.password,
+            name: req.body.name,
+        })
+
+        user.save(err => {
+            if (err) return res.status(500).send({ message: err._message })
+
+            let accountDetails = {
+                id: user.id,
+                username: user.email
+            }
+
             let token = createToken(user.id)
             res.cookie('jwt', token)
-        }
+            return res.status(200).send({ accountDetails })
+        })
     })
-
+    .catch(err => res.send(500).send({ message: 'server error /signup' }))
 }
 
 
 export const logout = (req, res) => {
     res.clearCookie('jwt')
-    res.status(200).json({ message: 'you have logged out'})
+    return res.status(200).send({ message: 'you have logged out'})
 }

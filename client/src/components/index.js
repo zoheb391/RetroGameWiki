@@ -8,11 +8,8 @@ import Game from './Game'
 import GamesListManager from './GamesListManager'
 import Form from './Form'
 import Login from './Login'
+import Signup from './Signup'
 import AddGamePanel from './AddGamePanel'
-
-
-
-
 
 
 export {
@@ -26,5 +23,6 @@ export {
     GamesListManager,
     Form,
     Login,
+    Signup,
     AddGamePanel
 }
