@@ -16,8 +16,8 @@ import { login, signup, logout } from './app/routes/user'
 import { getGames, postGame, deleteGame } from './app/routes/game'
 
 const app = express()
-const port = getConfig('PORT')
-const mongoString= getConfig('MONGO_STRING')
+const port = getConfig('SERVER_PORT')
+const mongoString= getConfig('MONGO_STRING2')
 
 //db connection
 mongoose.Promise = global.Promise
@@ -35,18 +35,11 @@ app.use(morgan('dev'))
 
 app.use(express.static(__dirname + '/client/dist'))
 
-//cors for development
+// cors for development
 app.use(cors({
     origin: 'http://localhost:3000',
     credentials: true
 }))
-
-// app.use((req, res, next) => {
-//     res.header("Access-Control-Allow-Origin", "*");
-//     res.header('Access-Control-Allow-Methods', 'GET,POST,DELETE');
-//     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-//     next()
-// })
 
 // User Routes
 app.route('/auth/login')
@@ -57,9 +50,6 @@ app.route('/auth/signup')
 
 app.route('/auth/logout')
     .post(logout)
-
-app.route('/test')
-    .get(auth, end)
 
 // API Routes
 app.route('/api/games')
@@ -73,6 +63,7 @@ app.route('*').get((req, res) => {
     res.sendFile('/client/dist/index.html')
 })
 
+//Listen
 app.listen(port, () => {
     console.log(`listening on port ${port}`)
 })

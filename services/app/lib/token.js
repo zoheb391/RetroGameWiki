@@ -1,7 +1,5 @@
 import jwt from 'jsonwebtoken'
 import moment from 'moment'
-import dotenv from 'dotenv'
-dotenv.config()
 
 const secret = process.env['JWT_SECRET']
 

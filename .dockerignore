@@ -1,0 +1,5 @@
+./services/node_modules
+npm-debug.log
+./services/yarn.lock
+./data/db
+.env
