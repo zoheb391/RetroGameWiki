@@ -1,0 +1,10 @@
+version: '2'
+services:
+
+    api:
+        image: node:8.4
+        volumes:
+            - ./services:/usr/src/app/
+        working_dir: /usr/src/app
+        entrypoint: ["yarn", "api"]
+    

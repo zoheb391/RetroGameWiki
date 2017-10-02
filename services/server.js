@@ -10,18 +10,21 @@ import cors from 'cors'
 import getConfig from './app/lib/config'
 import game from './app/models/Game'
 import user from './app/models/User'
-import { auth, end } from './app/middlewares/auth'
+import auth from './app/middlewares/auth'
+
 
 import { login, signup, logout } from './app/routes/user'
 import { getGames, postGame, deleteGame } from './app/routes/game'
 
 const app = express()
 const port = getConfig('SERVER_PORT')
-const mongoString= getConfig('MONGO_STRING2')
+const mongoString2 = getConfig('MONGO_STRING2')
+const mongoString1 = getConfig('MONGO_STRING1')
+
 
 //db connection
 mongoose.Promise = global.Promise
-mongoose.connect(mongoString)
+mongoose.connect(mongoString2)
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'))

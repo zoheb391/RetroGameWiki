@@ -1,27 +1,11 @@
 version: '2'
 services:
 
-    mongodb:
-        image: mongo:latest
-        volumes:
-            - ./data/db:/data/db
-        container_name: 'mongodb'
-        ports:
-            - 27017:27017
-
     api:
-        image: node:8.4
-        volumes:
-            - ./services:/usr/src/app/
         ports:
             - ${SERVER_PORT}:${SERVER_PORT}
-        working_dir: /usr/src/app
-        entrypoint: ["yarn", "api"]
-        links:
-            - mongodb
-        depends_on:
-            - mongodb
         environment:
             JWT_SECRET: ${JWT_SECRET}
             SERVER_PORT: ${SERVER_PORT}
             MONGO_STRING2: ${MONGO_STRING2}
+            MONGO_STRING1: ${MONGO_STRING1}

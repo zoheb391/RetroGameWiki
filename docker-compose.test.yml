@@ -1,0 +1,16 @@
+version: '2'
+services:
+
+    mongodb:
+        image: mongo:latest
+        volumes:
+            - ./data/test:/data/db
+        container_name: 'mongodbtest'
+        ports:
+            - 27018:27017
+
+    api:
+        links:
+            - mongodb
+        depends_on:
+            - mongodb

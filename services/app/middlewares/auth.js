@@ -1,19 +1,23 @@
 import getConfig from '../lib/config'
 import jwt from 'jsonwebtoken'
 
-export const auth = (req, res, next) => {
-    let token = req.cookies.jwt
-    let secret = getConfig('JWT_SECRET')
+const secret = getConfig('JWT_SECRET')
 
+const auth = (req, res, next) => {
+
+    let token = req.cookies.jwt
     if (!token) {
-        return res.status(401).send({ message: 'no token found' })
+        return res.status(401).send({ message: 'No Token :( please login' })
     }
 
     jwt.verify(token, secret, (err, decoded) => {
-        if (decoded) {
+        if (err) {
+            return res.status(401).send({ message: err.message })
+        } else if (decoded) {
+            req.userId = decoded.sub
             next()
-        } else {
-            return res.status(401).send({ message: 'jwt verification error' })
         }
     })
 }
+
+export default auth

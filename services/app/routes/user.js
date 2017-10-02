@@ -6,7 +6,6 @@ import createToken from '../lib/token'
 
 export const login = (req, res) => {
     let { email, password } = req.body
-    let token = req.cookies.jwt
 
     User.findOne({ email }, (err, user) => {
         if (!user) return res.status(401).send({ message: 'cannot find email'})

@@ -1,0 +1,16 @@
+version: '2'
+services:
+
+    mongodb:
+        image: mongo:latest
+        volumes:
+            - ./data/db:/data/db
+        container_name: 'mongodb'
+        ports:
+            - 27017:27017
+
+    api:
+        links:
+            - mongodb:db
+        depends_on:
+            - mongodb

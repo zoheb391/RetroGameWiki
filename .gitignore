@@ -1,4 +1,4 @@
 .env
 services/node_modules
-data/db
+data/**
 yarn.lock
