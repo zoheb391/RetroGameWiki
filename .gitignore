@@ -2,3 +2,4 @@
 services/node_modules
 yarn.lock
 data/**
+!*.gitkeep
