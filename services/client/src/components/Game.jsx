@@ -1,7 +1,8 @@
 import React from 'react'
 
 const Game = props => {
-    let { _id, i, name, description, picture, toggleModal, deleteGame, user } = props
+    let { name, description, picture } = props._source
+    let { _id, i, toggleModal, deleteGame, user } = props
 
     const DeleteButton = () => (
         <button className='btn btn-danger' role='button' onClick={() => deleteGame(i)}>

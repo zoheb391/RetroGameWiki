@@ -24,7 +24,7 @@ const mongoString1 = getConfig('MONGO_STRING1')
 
 //db connection
 mongoose.Promise = global.Promise
-mongoose.connect(mongoString2)
+mongoose.connect(mongoString1)
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'))

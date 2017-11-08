@@ -7,14 +7,24 @@ import { put, select, call } from 'redux-saga/effects'
 import { SET_GAMES, DELETE_GAME, SUBMIT_GAME, UPLOAD_PIC } from '../reducers/games'
 import { setGames, setPicURL } from '../reducers/games'
 
-const fetchGames = () => {
+const fetchGames = (searchTerm = "") => {
+    let ELSquery
+
+    searchTerm === ""
+        ? ELSquery = `http://localhost:9200/games/_search?`
+        : ELSquery = `http://localhost:9200/games/_search?q=${searchTerm}`
+
     return axios({
         method: 'GET',
-        url: 'http://localhost:8080/api/games',
-        withCredentials: true,
+        // url: 'http://localhost:8080/api/games',
+        url: ELSquery,
+        // withCredentials: true,
         headers: { 'Content-Type': 'application/json' },
     })
-    .then(response => response.data)
+    .then(response => {
+        return response.data.hits.hits
+        // return response.data
+    })
     .catch(error => {
         throw error
     })
@@ -84,9 +94,9 @@ function* deleteGame({ payload }) {
     }
 }
 
-function* getGames() {
+function* getGames({ payload: searchTerm }) {
     try {
-        let games = yield fetchGames()
+        let games = yield fetchGames(searchTerm)
         yield put(setGames(games))
 
     } catch (err) {
@@ -118,7 +128,6 @@ function* submitGame({ payload: game }) {
             console.log('fetch games error', err)
         }
     }
-
 }
 
 function* uploadPicture(){
@@ -132,12 +141,12 @@ function* uploadPicture(){
 
 function* watchGames() {
     yield takeLatest('init::games', getGames)
+    yield takeLatest('update::gameslist', getGames)
     yield takeLatest('delete::game', deleteGame)
     yield takeLatest(SUBMIT_GAME, submitGame)
     yield takeLatest(UPLOAD_PIC, uploadPicture)
 
 }
-
 
 export {
     watchGames

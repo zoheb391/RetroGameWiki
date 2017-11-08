@@ -5,7 +5,8 @@ services:
         ports:
             - ${SERVER_PORT}:${SERVER_PORT}
         environment:
-            JWT_SECRET: ${JWT_SECRET}
             SERVER_PORT: ${SERVER_PORT}
             MONGO_STRING2: ${MONGO_STRING2}
             MONGO_STRING1: ${MONGO_STRING1}
+            JWT_SECRET: ${JWT_SECRET}
+            

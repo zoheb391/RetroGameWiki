@@ -1,7 +1,8 @@
 import React from 'react';
 
 const Modal = props => {
-    const { _id, img, name, description, year, picture } = props.game;
+
+    const { _id, name, description, year, picture } = props.game;
 
     return (
         <div className='modal fade' id='game-modal' tabIndex='-1' role='dialog' aria-labelledby='myModalLabel'>
@@ -29,4 +30,4 @@ const Modal = props => {
     )
 }
 
-export default Modal 
+export default Modal

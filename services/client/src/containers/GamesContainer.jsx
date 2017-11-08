@@ -1,19 +1,20 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import debounce from 'debounce'
 
 import { Modal, GamesListManager } from '../components'
 
 const mapStateToProps = state => ({
     name: state.app.name,
-    searchBar: state.app.searchBar,
+    // searchBar: state.app.searchBar,
     user: state.authentication.user,
     gamesList: state.games.list,
     selectedGame: state.games.selectedGame
 })
 
 const mapDispatchToProps = {
-    setSearchBar: value => ({ type: 'setSearchBar@app', payload: value }),
     initGames: () => ({ type: 'init::games'}),
+    updateGamesList: searchTerm => ({ type: 'update::gameslist', payload: searchTerm }),
     selectGame: game => ({ type: 'setSelectedGame@app', payload: game }),
     deleteGame: index => ({ type: 'delete::game', payload: index }),
     logout: () => ({ type: 'do::logout'})
@@ -28,19 +29,21 @@ class GamesContainer extends Component {
 
     toggleModal (index) {
         const { selectGame, gamesList } = this.props
-        selectGame(gamesList[index])
+        selectGame(gamesList[index]._source)
         $('#game-modal').modal()
     }
 
     render() {
-        const { setSearchBar, searchBar, gamesList, selectedGame, deleteGame, logout, user } = this.props
+        const { searchBar, gamesList, selectedGame, deleteGame, logout, user } = this.props
+        const updateGamesList = debounce(this.props.updateGamesList, 600)
+
         return (
             <div>
                 <Modal game={selectedGame} />
                 <GamesListManager
                     games={gamesList}
                     searchBar={searchBar}
-                    setSearchBar={setSearchBar}
+                    updateGamesList={updateGamesList}
                     toggleModal={this.toggleModal.bind(this)}
                     deleteGame={deleteGame}
                     logout={logout}
