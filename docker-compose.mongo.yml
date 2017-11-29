@@ -9,6 +9,10 @@ services:
         ports:
             - 27017:27017
 
+        #to run as a replica set
+        # entrypoint: ['/usr/bin/mongod', '--replSet', 'rs', '--smallfiles', '--httpinterface', '--rest']
+
+
     api:
         links:
             - mongodb:db
